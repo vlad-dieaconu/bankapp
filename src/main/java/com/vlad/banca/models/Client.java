@@ -13,21 +13,52 @@ public class Client {
     private Long id;
     private String CNP;
     private String nume;
-    private double CONT_EURO;
-    private double CONT_RON;
+    private String prenume;
+    private double CONT_EURO = 0;
+    private double CONT_RON = 0;
+    private String email;
+    private String password;
+
 
 
     public Client() {
 
     }
 
-    public Client(String CNP, double CONT_EURO, double CONT_RON, String nume) {
+    public Client(String CNP, String nume,String prenume, String email, String password) {
         this.CNP = CNP;
-        this.CONT_EURO = CONT_EURO;
-        this.CONT_RON = CONT_RON;
         this.nume = nume;
+        this.prenume = prenume;
+        this.email = email;
+        this.password = password;
+        this.CONT_EURO = this.getCONT_EURO();
+        this.CONT_RON = this.getCONT_RON();
+
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPrenume() {
+        return prenume;
+    }
+
+    public void setPrenume(String prenume) {
+        this.prenume = prenume;
+    }
 
     public String getNume() {
         return nume;

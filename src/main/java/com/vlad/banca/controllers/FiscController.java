@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import com.vlad.banca.exceptions.ClientNotFoundException;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -47,6 +50,30 @@ public class FiscController {
             fiscRepository.deleteById(id);
         }else throw new ClientMonitorizatNotFoundException(clientMonitorizat);
     }
+
+    @GetMapping("/getclientsdata")
+    public List<Optional<Client>> getClientsData(){
+        List<Optional<Client>> clients = new ArrayList();
+        List<Fisc> listaClienti = new ArrayList<>();
+
+        listaClienti = fiscRepository.findAll();
+
+        ArrayList<Long> clientsIds = new ArrayList<Long>();
+
+        for(int i = 0; i < listaClienti.size(); i++){
+            clientsIds.add(listaClienti.get(i).getIdClient());
+        }
+
+        for(int i = 0; i < clientsIds.size(); i++){
+            Optional<Client> client = clientRepository.findById(clientsIds.get(i));
+            clients.add(client);
+
+        }
+
+        return clients;
+    }
+
+
 
     
 
