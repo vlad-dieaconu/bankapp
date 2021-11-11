@@ -1,5 +1,7 @@
 package com.vlad.banca.controllers;
 
+import com.vlad.banca.forms.LoginForm;
+import com.vlad.banca.forms.LoginResponse;
 import com.vlad.banca.forms.RegisterForm;
 import com.vlad.banca.models.Client;
 import com.vlad.banca.repositories.ClientRepository;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.vlad.banca.exceptions.ClientNotFoundException;
 
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,6 +25,21 @@ public class ClientController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @PostMapping("/login")
+    public ResponseEntity loginClient(@Valid @RequestBody LoginForm loginForm){
+        if(clientRepository.existsByemail(loginForm.getEmail())){
+        Client client = clientRepository.findByemail(loginForm.getEmail());
+
+
+        if(client.getPassword().equals(loginForm.getPassword()))
+           return ResponseEntity.ok().body(client);
+
+        } else
+            return new ResponseEntity("Login fail !",
+                    HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok().body("LOGIN");
+    }
 
     @PostMapping("/register")
     public ResponseEntity registerClient(@Valid @RequestBody RegisterForm registerForm){
