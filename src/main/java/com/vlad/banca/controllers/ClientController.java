@@ -28,6 +28,10 @@ public class ClientController {
 
     @PostMapping("/login")
     public ResponseEntity loginClient(@Valid @RequestBody LoginForm loginForm){
+
+        if(loginForm.getEmail().equals("fisc@mail.com") && loginForm.getPassword().equals("fisc"))
+            return ResponseEntity.ok().body("FISC");
+
         if(clientRepository.existsByemail(loginForm.getEmail())){
         Client client = clientRepository.findByemail(loginForm.getEmail());
 
@@ -38,7 +42,7 @@ public class ClientController {
         } else
             return new ResponseEntity("Login fail !",
                     HttpStatus.BAD_REQUEST);
-        return ResponseEntity.ok().body("LOGIN");
+        return ResponseEntity.ok().body("LOGIN FAIL");
     }
 
     @PostMapping("/register")
@@ -59,9 +63,12 @@ public class ClientController {
 
     }
 
-    @GetMapping("/getalldata")
-    public List<Client> allClients(){
-        return clientRepository.findAll();
+    @GetMapping("/getdata/{id}")
+    public Client getClientData(@PathVariable Long id){
+
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
+        return client;
+
     }
 
     @PutMapping("/retragere/conteuro/{id}")
