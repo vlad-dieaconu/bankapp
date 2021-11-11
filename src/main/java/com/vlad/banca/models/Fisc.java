@@ -2,6 +2,8 @@ package com.vlad.banca.models;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="fisc")
@@ -14,10 +16,16 @@ public class Fisc {
 
 
 
+
     public Fisc(){}
 
     public Fisc(Long idClient) {
         this.idClient = idClient;
+    }
+
+
+    public Long getIdClient() {
+        return idClient;
     }
 
     public Long idClient() {

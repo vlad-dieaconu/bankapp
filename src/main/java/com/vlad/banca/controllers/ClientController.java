@@ -1,11 +1,19 @@
 package com.vlad.banca.controllers;
 
+import com.vlad.banca.forms.RegisterForm;
 import com.vlad.banca.models.Client;
 import com.vlad.banca.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
+
 import com.vlad.banca.exceptions.ClientNotFoundException;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -15,9 +23,22 @@ public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @PostMapping("/add")
-    Client postClient(@RequestBody Client client){
-        return clientRepository.save(client);
+    @PostMapping("/register")
+    public ResponseEntity registerClient(@Valid @RequestBody RegisterForm registerForm){
+        System.out.println("AM INTRAT AICI");
+        if(clientRepository.existsByemail(registerForm.getEmail()) || clientRepository.existsByemail(registerForm.getCNP())){
+            return new ResponseEntity("Fail -> Email is already taken!",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        System.out.println("CEVA");
+        Client client = new Client (registerForm.getCNP(),registerForm.getNume(),registerForm.getPrenume()
+                ,registerForm.getEmail(), registerForm.getPassword());
+
+        clientRepository.save(client);
+       // return client;
+        return ResponseEntity.ok().body("Client registered successfully !");
+
     }
 
     @GetMapping("/getalldata")
